@@ -8,7 +8,7 @@
   font-weight: 400;
 
   color-scheme: dark light;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(137, 50, 50, 0.87);
   background-color: #121212;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,8 +22,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #dfecf4;
+  color: #573d3d;
 }
 
 h1, h2 {
@@ -51,6 +51,7 @@ button {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
 }
+
 button:hover {
   background-color: #4caf50;
   transform: translateY(-2px);

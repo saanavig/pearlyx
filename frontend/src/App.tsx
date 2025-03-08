@@ -1,3 +1,5 @@
+import "./index.css";
+
 import React, { useState } from "react";
 
 import { ReactMic } from "react-mic";
@@ -82,11 +84,25 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navbar */}
-      <nav className="bg-teal-600 text-white py-4 px-6 shadow-md">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Pearlyx</h1>
+      <nav className="min-w-screen flex justify-between items-center py-4 px-8 bg-white shadow-md">
+        <div className="text-xl font-semibold flex items-center">
+          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+            VI
+          </div>
+          <span className="ml-2 text-gray-900">Pearlyx</span>
+        </div>
+        <div className="space-x-6">
+          <a href="#" className="text-blue-600 font-medium">
+            Home
+          </a>
+          <a href="/about" className="text-gray-600 hover:text-gray-900">
+            About
+          </a>
+          <a href="#" className="text-gray-600 hover:text-gray-900">
+            Login
+          </a>
         </div>
       </nav>
 
