@@ -1,10 +1,10 @@
 import "./index.css";
-
 import React, { useState } from "react";
-import { Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // You still need to use this hook in Home
 
 import Analyze from "./Analyze.tsx";
 import { ReactMic } from "react-mic";
+import About from "./About.tsx"; // Assuming About is a separate component
 
 const Home: React.FC = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
       <nav className="flex justify-between items-center py-4 px-8 bg-white shadow-md">
         <div className="text-xl font-semibold flex items-center">
           <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-            VI
+            P
           </div>
           <span className="ml-2 text-gray-900">Pearlyx</span>
         </div>
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
 
       <div className="flex flex-col items-center justify-center text-center mt-10 px-6 w-screen min-h-screen pb-10">
         <span className="text-blue-500 font-medium bg-blue-100 px-3 py-1 rounded-full">
-          Pearlyx
+          Medical Voice Analysis
         </span>
         <h1 className="text-5xl font-bold mt-4 text-black">
           Early Disease Detection <br /> Through Voice Analysis
@@ -151,15 +151,4 @@ const Home: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/analyze" element={<Analyze />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
+export default Home;
