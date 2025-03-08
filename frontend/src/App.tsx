@@ -100,9 +100,6 @@ const App: React.FC = () => {
           <a href="/about" className="text-gray-600 hover:text-gray-900">
             About
           </a>
-          <a href="#" className="text-gray-600 hover:text-gray-900">
-            Login
-          </a>
         </div>
       </nav>
 
