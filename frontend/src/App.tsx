@@ -167,6 +167,12 @@ const Home: React.FC = () => {
           {uploadMessage && <p className="mt-4 text-lg font-semibold">{uploadMessage}</p>}
         </div>
       </div>
+      <footer className="bg-white py-4 mt-10 shadow-inner">
+                <div className="container mx-auto text-center text-gray-600">
+                    <p>&copy; {new Date().getFullYear()} Pearlyx. All rights reserved.</p>
+                    
+                </div>
+            </footer>
     </div>
   );
 };
