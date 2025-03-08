@@ -102,6 +102,33 @@ const App: React.FC = () => {
           </a>
         </div>
       </nav>
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-center text-center mt-10 px-6 w-screen h-screen">
+        <span className="text-blue-500 font-medium bg-blue-100 px-3 py-1 rounded-full">
+          Pearlyx
+        </span>
+        <h1 className="text-5xl font-bold mt-4 text-black">
+          Early Disease Detection <br /> Through Voice Analysis
+        </h1>
+        <p className="text-gray-600 mt-4 max-w-2xl">
+          Our advanced AI analyzes subtle patterns in your voice to detect early signs
+          of neurological and respiratory conditions.
+        </p>
+
+        {/* Voice Analysis Box */}
+        <div className="mt-10 bg-white p-6 shadow-lg rounded-lg w-full max-w-lg text-center">
+          <span className="text-blue-500 font-medium bg-blue-100 px-3 py-1 rounded-full">
+            READY
+          </span>
+          <h2 className="text-2xl font-semibold mt-2">Pearlyx</h2>
+          <p className="text-gray-600 mt-2">Press the button to start recording your voice</p>
+            <div className="h-32 flex items-center justify-center"> {/* Added height */}
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">
+              Start Recording
+            </button>
+            </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="flex flex-col items-center justify-center h-[80vh] space-y-6">
