@@ -105,26 +105,39 @@ const Home: React.FC = () => {
         <div className="mt-10 bg-white p-6 pt-10 shadow-lg rounded-lg w-full max-w-lg text-center">
           <h2 className="text-3xl font-semibold text-gray-800">Upload or Record Audio</h2>
 
-          {/* File Upload */}
           <div className="flex flex-col items-center space-y-2">
-            <input type="file" accept="audio/*" onChange={handleFileChange} className="p-2 border rounded-md" />
-            {audioFile && (
-              <>
-                <p className="text-gray-700">Uploaded: {audioFile.name}</p>
-                <div className="flex space-x-2">
-                  <button onClick={uploadFile} className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md">
-                    Upload & Analyze
-                  </button>
-                  <button
-                    onClick={() => setAudioFile(null)}
-                    className="px-4 py-2 mt-2 bg-red-500 text-white rounded-md"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
+  <label
+    htmlFor="file-upload"
+    className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md font-semibold cursor-pointer text-lg"
+  >
+    Choose File
+  </label>
+  <div className="mt-2"></div>
+  <input
+    id="file-upload"
+    type="file"
+    accept="audio/*"
+    onChange={handleFileChange}
+    className="hidden"
+  />
+  {audioFile && (
+    <>
+      <p className="text-gray-700">Uploaded: {audioFile.name}</p>
+      <div className="flex space-x-2">
+        <button onClick={uploadFile} className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md cursor-pointer">
+          Upload & Analyze
+        </button>
+        <button
+          onClick={() => setAudioFile(null)}
+          className="px-4 py-2 mt-2 bg-red-500 text-white rounded-md cursor-pointer"
+        >
+          Delete
+        </button>
+      </div>
+      <div className="mt-4"></div>
+    </>
+  )}
+</div>
 
           {/* Audio Recorder */}
           <div className="flex flex-col items-center space-y-2">
@@ -144,7 +157,7 @@ const Home: React.FC = () => {
             {recordedBlob && (
               <>
                 <audio controls src={URL.createObjectURL(recordedBlob)} />
-                <button onClick={uploadFile} className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md">
+                <button onClick={uploadFile} className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md cursor-pointer">
                   Upload & Analyze Audio
                 </button>
               </>
