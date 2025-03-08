@@ -3,9 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import parselmouth
+from analyzer import Analyzer
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"wav", "mp3", "m4a"}
@@ -42,16 +45,25 @@ def upload_audio():
             }), 200
 
     return jsonify({"error": "Invalid file type"}), 400
-
 @app.route("/analyze", methods=["POST"])
 def analyze_audio():
     data = request.get_json()
     filename = data.get("filename")
 
+    if not request.is_json:
+        return jsonify({"error": "Content-Type must be application/json"}), 415
+
     if not filename:
         return jsonify({"error": "No filename provided"}), 400
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
+    if not os.path.exists(file_path):
+        return jsonify({"error": "File not found"}), 404
 
+    analyzer = Analyzer(file="models/model.pkl")
+    features = analyzer.get_features(file_path)
+    prediction = analyzer.predict(features)
+    return jsonify({"prediction": prediction.tolist()}), 200
 
 @app.route("/delete/<filename>", methods=["DELETE"])
 def delete_file(filename):

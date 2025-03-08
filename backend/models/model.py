@@ -43,10 +43,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model = xgb.XGBClassifier(random_state = 42,
                             n_estimators = 100,
                             learning_rate = 0.1,
-                            max_depth = 5,
-                            min_child_weight = 1,
-                            subsample = 0.9,
-                            colsample_bytree = 0.8)
+                            max_depth = 4,
+                            min_child_weight = 2,
+                            subsample = 0.8,
+                            colsample_bytree = 0.7,
+                            gamma = 1,
+                            alpha = 0)
 
 model.fit(X_train, y_train)
 
