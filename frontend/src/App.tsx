@@ -90,7 +90,7 @@ const Home: React.FC = () => {
         </div>
       </nav>
 
-      <div className="flex flex-col items-center justify-center text-center mt-10 px-6 w-screen min-h-screen pb-10">
+      <div className="flex flex-col items-center justify-center text-center mt-6 px-6 w-screen min-h-screen pb-10">
         <span className="text-blue-500 font-medium bg-blue-100 px-3 py-1 rounded-full">
           Medical Voice Analysis
         </span>
