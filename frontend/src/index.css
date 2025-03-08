@@ -22,6 +22,7 @@ body {
   min-height: 100vh;
   background-color: #dfecf4;
   color: #573d3d;
+  overflow-x: hidden;
 }
 
 h1, h2 {
