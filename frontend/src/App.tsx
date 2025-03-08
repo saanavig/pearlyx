@@ -34,6 +34,7 @@ const App: React.FC = () => {
       if (!fileToUpload)
       {
         setUploadMessage("❌ No file selected.");
+        setTimeout(() => setUploadMessage(null), 5000);
         return;
       }
 
@@ -50,15 +51,18 @@ const App: React.FC = () => {
         if (response.ok)
         {
           setUploadMessage("✅ File uploaded successfully!");
+          setTimeout(() => setUploadMessage(null), 5000);
         }
         else
         {
           setUploadMessage(`❌ Error: ${data.error}`);
+          setTimeout(() => setUploadMessage(null), 5000);
         }
       }
       catch
       {
         setUploadMessage("❌ Error uploading file.");
+        setTimeout(() => setUploadMessage(null), 5000);
       }
     };
 
@@ -76,10 +80,12 @@ const App: React.FC = () => {
       }
       else {
         setUploadMessage(`❌ Error: ${data.error}`);
+        setTimeout(() => setUploadMessage(null), 5000);
       }
     }
     catch {
       setUploadMessage("❌ Error deleting file.");
+      setTimeout(() => setUploadMessage(null), 5000);
     }
   };
 
