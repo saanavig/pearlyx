@@ -82,7 +82,7 @@ class Analyzer:
         features.append(meanNoiseToHarmHarmonicity)
 
         meanHarmToNoiseHarmonicity = 10 ** (meanAutoCorrHarmonicity / 10)
-        features.append(meanNoiseToHarmHarmonicity)
+        features.append(meanHarmToNoiseHarmonicity)
 
         intensity = call(sound, "To Intensity", 75, 0.0)
         minIntensity = call(intensity, "Get minimum", 0, 0, "Parabolic")
