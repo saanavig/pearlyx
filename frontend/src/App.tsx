@@ -22,29 +22,62 @@ const App: React.FC = () => {
     setRecordedBlob(recordedBlob.blob);
   };
 
-  const uploadFile = async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
+  const uploadFile = async () => {
+      let fileToUpload = audioFile;
 
+      if (recordedBlob) {
+        fileToUpload = new File([recordedBlob], "recorded-audio.wav", { type: "audio/wav" });
+      }
+
+      if (!fileToUpload)
+      {
+        setUploadMessage("❌ No file selected.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", fileToUpload);
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (response.ok)
+        {
+          setUploadMessage("✅ File uploaded successfully!");
+        }
+        else
+        {
+          setUploadMessage(`❌ Error: ${data.error}`);
+        }
+      }
+      catch
+      {
+        setUploadMessage("❌ Error uploading file.");
+      }
+    };
+
+
+  const deleteFile = async (filename: string) => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/upload", {
-        method: "POST",
-        body: formData,
+      const response = await fetch(`http://127.0.0.1:5000/delete/${filename}`, {
+        method: "DELETE",
       });
 
       const data = await response.json();
-      if (response.ok)
-        {
-        setUploadMessage("✅ File uploaded successfully!");
+      if (response.ok) {
+        setUploadMessage("🗑️ File deleted successfully!");
+        setAudioFile(null);
       }
-      else
-      {
+      else {
         setUploadMessage(`❌ Error: ${data.error}`);
       }
     }
-    catch
-    {
-      setUploadMessage("❌ Error uploading file.");
+    catch {
+      setUploadMessage("❌ Error deleting file.");
     }
   };
 
@@ -65,16 +98,22 @@ const App: React.FC = () => {
         <div className="flex flex-col items-center space-y-2">
           <input type="file" accept="audio/*" onChange={handleFileChange} className="p-2 border rounded-md" />
           {audioFile && (
-            <>
-              <p className="text-gray-700">Uploaded: {audioFile.name}</p>
-              <button
-                onClick={() => uploadFile(audioFile)}
-                className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md"
-              >
-                Upload
-              </button>
-            </>
-          )}
+          <>
+            <p className="text-gray-700">Uploaded: {audioFile.name}</p>
+            <button
+              onClick={uploadFile}
+              className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md"
+            >
+              Upload
+            </button>
+            <button
+              onClick={() => deleteFile(audioFile.name)}
+              className="px-4 py-2 mt-2 bg-red-500 text-white rounded-md ml-2"
+            >
+              Delete
+            </button>
+          </>
+        )}
         </div>
 
         {/* Audio Recorder */}
@@ -93,16 +132,16 @@ const App: React.FC = () => {
             {recording ? "Stop Recording" : "Start Recording"}
           </button>
           {recordedBlob && (
-            <>
-              <audio controls src={URL.createObjectURL(recordedBlob)} />
-              <button
-                onClick={() => uploadFile(new File([recordedBlob], "recorded-audio.wav", { type: "audio/wav" }))}
-                className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md"
-              >
-                Upload Recording
-              </button>
-            </>
-          )}
+          <>
+            <audio controls src={URL.createObjectURL(recordedBlob)} />
+            <button
+              onClick={uploadFile}
+              className="px-4 py-2 mt-2 bg-blue-500 text-white rounded-md"
+            >
+              Upload Recording
+            </button>
+          </>
+        )}
         </div>
 
         {uploadMessage && <p className="mt-4 text-lg font-semibold">{uploadMessage}</p>}

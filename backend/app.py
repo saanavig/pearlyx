@@ -38,5 +38,16 @@ def upload_audio():
 
     return jsonify({"error": "Invalid file type"}), 400
 
+@app.route("/delete/<filename>", methods=["DELETE"])
+def delete_file(filename):
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"File Deleted: {file_path}")
+        return jsonify({"message": "File deleted successfully!"}), 200
+    else:
+        return jsonify({"error": "File not found"}), 404
+
 if __name__ == "__main__":
     app.run(debug=True)
