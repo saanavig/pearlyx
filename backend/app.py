@@ -35,7 +35,11 @@ def upload_audio():
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(filepath)
 
-        return jsonify({"message": "File uploaded successfully!", "filepath": filepath}), 200
+        return jsonify({
+            "message": "File uploaded successfully!",
+            "filepath": filepath,
+            "filename": filename
+            }), 200
 
     return jsonify({"error": "Invalid file type"}), 400
 
