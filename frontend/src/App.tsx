@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const [recording, setRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -53,12 +53,19 @@ const Home: React.FC = () => {
       if (response.ok) {
         setUploadMessage("✅ File uploaded successfully!");
         setTimeout(() => setUploadMessage(null), 2000);
-        navigate("/analyze", { state: { fileUrl: data.fileUrl } }); 
-      } else {
+        navigate("/analyze",
+          { state:
+            { filepath: data.filepath,
+              filename: data.filename
+            }
+          });
+      }
+      else {
         setUploadMessage(`❌ Error: ${data.error}`);
         setTimeout(() => setUploadMessage(null), 5000);
       }
-    } catch {
+    }
+    catch {
       setUploadMessage("❌ Error uploading file.");
       setTimeout(() => setUploadMessage(null), 5000);
     }
