@@ -41,12 +41,12 @@ y = df['class']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 
 model = xgb.XGBClassifier(random_state = 42,
-                          n_estimators = 100,
-                          learning_rate = 0.1,
-                          max_depth = 5,
-                          min_child_weight = 1,
-                          subsample = 0.9,
-                          colsample_bytree = 0.8)
+                            n_estimators = 100,
+                            learning_rate = 0.1,
+                            max_depth = 5,
+                            min_child_weight = 1,
+                            subsample = 0.9,
+                            colsample_bytree = 0.8)
 
 model.fit(X_train, y_train)
 

@@ -12,8 +12,8 @@ class Analyzer:
         with open(model_path, 'rb') as f:
             model = pickle.load(f)
         self.model = model
-    
+
     def predict(self, params): # params is a 2D numpy array
         return self.model.predict(params)
-    
+
     # more functions for creating measurements

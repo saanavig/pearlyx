@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+import parselmouth
 
 app = Flask(__name__)
 CORS(app)
@@ -37,6 +38,16 @@ def upload_audio():
         return jsonify({"message": "File uploaded successfully!", "filepath": filepath}), 200
 
     return jsonify({"error": "Invalid file type"}), 400
+
+@app.route("/analyze", methods=["POST"])
+def analyze_audio():
+    data = request.get_json()
+    filename = data.get("filename")
+
+    if not filename:
+        return jsonify({"error": "No filename provided"}), 400
+
+
 
 @app.route("/delete/<filename>", methods=["DELETE"])
 def delete_file(filename):
