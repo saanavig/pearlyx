@@ -109,6 +109,7 @@ const Analyze: React.FC = () => {
           <Link to="/" className="text-gray-600 hover:text-gray-900">
             Home
           </Link>
+          <Link to="/chat" className="text-gray-600 hover:text-gray-900">Chat</Link>
           <Link to="/about" className="text-blue-600 font-medium">
             About
           </Link>
