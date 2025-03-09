@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+from pydub import AudioSegment
 # import parselmouth
 from analyzer import Analyzer
 from parkinsons import classify_parkinsons_info
@@ -21,6 +22,22 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def convert_to_wav(input_path, output_path):
+    try:
+        audio = AudioSegment.from_file(input_path)
+
+        audio = audio.set_frame_rate(44100)
+        audio = audio.set_channels(1)
+        audio = audio.set_sample_width(2)
+
+        # Export as WAV
+        audio.export(output_path, format="wav", parameters=["-ac", "1"])
+        print(f"Successfully converted {input_path} to {output_path}")
+        return True
+    except Exception as e:
+        print(f"Conversion error: {str(e)}")
+        return False
+
 @app.route("/")
 def home():
     return "Pearlyx Backend is Running!"
@@ -29,21 +46,36 @@ def home():
 def upload_audio():
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
-    file = request.files["file"]
 
+    file = request.files["file"]
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(filepath)
+        try:
+            filename = secure_filename(file.filename)
+            original_filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(original_filepath)
 
-        return jsonify({
-            "message": "File uploaded successfully!",
-            "filepath": filepath,
-            "filename": filename
-        }), 200
+            # Always convert to WAV with specific parameters
+            wav_filename = f"{os.path.splitext(filename)[0]}.wav"
+            wav_filepath = os.path.join(app.config["UPLOAD_FOLDER"], wav_filename)
+
+            if convert_to_wav(original_filepath, wav_filepath):
+                # Remove original file if it's not the same as the WAV file
+                if original_filepath != wav_filepath:
+                    os.remove(original_filepath)
+                return jsonify({
+                    "message": "File uploaded and converted successfully!",
+                    "filepath": wav_filepath,
+                    "filename": wav_filename
+                }), 200
+            else:
+                return jsonify({"error": "Error converting audio file"}), 500
+
+        except Exception as e:
+            print(f"Upload error: {str(e)}")
+            return jsonify({"error": f"Upload failed: {str(e)}"}), 500
 
     return jsonify({"error": "Invalid file type"}), 400
 
@@ -59,7 +91,7 @@ def analyze_audio():
 
         if not filename:
             return jsonify({"error": "No filename provided"}), 400
-            
+
         file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
         if not os.path.exists(file_path):
@@ -111,7 +143,7 @@ def chat():
             return jsonify({"error": "No message provided"}), 400
 
         response = get_parkinsons_chat_response(message)
-        
+
         return jsonify({
             "response": response,
             "status": "success"

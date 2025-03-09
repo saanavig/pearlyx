@@ -33,7 +33,13 @@ const Home: React.FC = () => {
     let fileToUpload = audioFile;
 
     if (recordedBlob) {
-      fileToUpload = new File([recordedBlob], "recorded-audio.wav", { type: "audio/wav" });
+      // Create a more unique filename with timestamp
+      const timestamp = new Date().getTime();
+      fileToUpload = new File(
+        [recordedBlob], 
+        `recorded-audio-${timestamp}.wav`, 
+        { type: "audio/wav" }
+      );
     }
 
     if (!fileToUpload) {
@@ -46,6 +52,7 @@ const Home: React.FC = () => {
     formData.append("file", fileToUpload);
 
     try {
+      setUploadMessage("⏳ Processing audio...");
       const response = await fetch("http://127.0.0.1:5000/upload", {
         method: "POST",
         body: formData,
@@ -53,22 +60,21 @@ const Home: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setUploadMessage("✅ File uploaded successfully!");
+        setUploadMessage("✅ File processed successfully!");
         setTimeout(() => setUploadMessage(null), 2000);
-        navigate("/analyze",
-          { state:
-            { filepath: data.filepath,
-              filename: data.filename,
-            }
-          });
-      }
-      else {
+        navigate("/analyze", {
+          state: {
+            filepath: data.filepath,
+            filename: data.filename,
+          }
+        });
+      } else {
         setUploadMessage(`❌ Error: ${data.error}`);
         setTimeout(() => setUploadMessage(null), 5000);
       }
-    }
-    catch {
-      setUploadMessage("❌ Error uploading file.");
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadMessage("❌ Error processing file.");
       setTimeout(() => setUploadMessage(null), 5000);
     }
   };
@@ -156,6 +162,9 @@ const Home: React.FC = () => {
               onStop={onStop}
               strokeColor="#4A90E2"
               backgroundColor="#f8f9fa"
+              mimeType="audio/wav"
+              bitRate={128}
+              sampleRate={44100}
             />
             <button
               onClick={toggleRecording}
