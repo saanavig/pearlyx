@@ -1,10 +1,11 @@
 import "./index.css";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // You still need to use this hook in Home
 
+import React, { useState } from "react";
+
+import About from "./About.tsx"; // Assuming About is a separate component
 import Analyze from "./Analyze.tsx";
 import { ReactMic } from "react-mic";
-import About from "./About.tsx"; // Assuming About is a separate component
+import { useNavigate } from "react-router-dom"; // You still need to use this hook in Home
 
 const Home: React.FC = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -56,7 +57,7 @@ const Home: React.FC = () => {
         navigate("/analyze",
           { state:
             { filepath: data.filepath,
-              filename: data.filename
+              filename: data.filename,
             }
           });
       }

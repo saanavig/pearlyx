@@ -2,12 +2,12 @@ import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-import parselmouth
+# import parselmouth
 from analyzer import Analyzer
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 
 UPLOAD_FOLDER = "uploads"

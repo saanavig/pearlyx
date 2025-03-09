@@ -1,10 +1,11 @@
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import React from "react";
 
 const Analyze: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { filepath, filename } = location.state || {};
+  const { filepath, filename, prediction } = location.state || {};
 
   if (!filepath || !filename) {
     return (
@@ -44,6 +45,7 @@ const Analyze: React.FC = () => {
         <h1 className="text-4xl font-bold text-gray-800 mt-10">Analysis Results</h1>
         <div className="mt-4 text-gray-600">
           <p>File name: <strong>{filename}</strong></p>
+          <p>Prediction: <strong>{prediction}</strong></p>
         </div>
         <button
           onClick={() => navigate("/")}
