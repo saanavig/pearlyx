@@ -2,11 +2,11 @@ import "./index.css";
 
 import React, { useState } from "react";
 
-import About from "./About.tsx"; // Assuming About is a separate component
+import About from "./About.tsx";
 import Analyze from "./Analyze.tsx";
 import { ReactMic } from "react-mic";
-import logo from './assets/logo.png'; // or adjust path as needed
-import { useNavigate } from "react-router-dom"; // You still need to use this hook in Home
+import logo from './assets/logo.png';
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
