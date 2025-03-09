@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import About from "./About.tsx"; // Assuming About is a separate component
 import Analyze from "./Analyze.tsx";
 import { ReactMic } from "react-mic";
+import logo from './assets/logo.png'; // or adjust path as needed
 import { useNavigate } from "react-router-dom"; // You still need to use this hook in Home
 
 const Home: React.FC = () => {
@@ -76,8 +77,12 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <nav className="flex justify-between items-center py-4 px-8 bg-white shadow-md">
         <div className="text-xl font-semibold flex items-center">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-            P
+          <div className="w-12 h-12 rounded-full flex items-center justify-center">
+            <img 
+              src={logo} 
+              alt="Pearlyx Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <span className="ml-2 text-gray-900">Pearlyx</span>
         </div>
