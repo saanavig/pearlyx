@@ -4,11 +4,11 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 # import parselmouth
 from analyzer import Analyzer
+from parkinsons import classify_parkinsons_info
 
 app = Flask(__name__)
 
 CORS(app)
-
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"wav", "mp3", "m4a"}
@@ -42,7 +42,7 @@ def upload_audio():
             "message": "File uploaded successfully!",
             "filepath": filepath,
             "filename": filename
-            }), 200
+        }), 200
 
     return jsonify({"error": "Invalid file type"}), 400
 
@@ -54,9 +54,11 @@ def analyze_audio():
 
         data = request.get_json()
         filename = data.get("filename")
+        needs_classification = data.get("needs_classification", False)
 
         if not filename:
             return jsonify({"error": "No filename provided"}), 400
+            
         file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
         if not os.path.exists(file_path):
@@ -66,13 +68,19 @@ def analyze_audio():
         features = analyzer.get_features(file_path)
         prediction_result = analyzer.predict(features)
 
-        return jsonify({
+        response_data = {
             "prediction": prediction_result,
             "status": "success"
-        }), 200
+        }
+
+        if needs_classification and prediction_result['prediction'] == 1:
+            additional_info = classify_parkinsons_info("Detected symptoms based on audio analysis.")
+            response_data["classification"] = additional_info
+
+        return jsonify(response_data), 200
 
     except Exception as e:
-        print(f"Error in analyze_audio: {str(e)}")  # For debugging
+        print(f"Error in analyze_audio: {str(e)}")
         return jsonify({
             "error": f"Analysis failed: {str(e)}",
             "status": "error"

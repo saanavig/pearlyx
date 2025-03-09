@@ -31,15 +31,30 @@ class Analyzer:
 
         self.model = model
 
-    def predict(self, params, threshold=0.6):
+    def predict(self, params, threshold=0.52):
         if hasattr(self, 'scaler') and self.scaler is not None:
             params = self.scaler.transform(params)
-        prob = self.model.predict_proba(params)[:, 1][0]
+
+        prob = float(self.model.predict_proba(params)[:, 1][0])
+        print(f"Raw probability: {prob}")
+
         prediction = 1 if prob > threshold else 0
+
+        # Determine confidence level
+        if abs(prob - 0.52) < 0.1:
+            confidence = "Medium"
+        elif prob > 0.7:
+            confidence = "High"
+        else:
+            confidence = "Low"
+
+        print(f"Probability: {prob}, Prediction: {prediction}, Confidence: {confidence}")
 
         return {
             'prediction': prediction,
-            'diagnosis': 'Parkinson\'s detected' if prediction == 1 else 'No Parkinson\'s detected'
+            'probability': prob,
+            'confidence': confidence,
+            'diagnosis': 'Parkinson\'s detected' if prediction == 1 else 'No Parkinson\'s detected',
         }
 
     # more functions for creating measurements
