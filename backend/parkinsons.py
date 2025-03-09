@@ -2,13 +2,19 @@ import os
 import requests
 from dotenv import load_dotenv
 
+# Load environment variables from .env file
 load_dotenv()
 
+# Get API key from environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+#debugging
+print(f"API Key loaded: {'Yes' if GEMINI_API_KEY else 'No'}")  # Safe debugging output
 
 if not GEMINI_API_KEY:
     raise ValueError("Gemini API key is missing! Please add it to the .env file.")
 
+#for testing ai responses (prolly not gonna use it...)
 def classify_parkinsons_info(text: str) -> str:
     """
     Classifies the text for Parkinson's disease symptoms, and provides next steps.
@@ -35,7 +41,7 @@ def classify_parkinsons_info(text: str) -> str:
 
     try:
         response = requests.post(
-            "https://api.gemini.google.com/v1/generate",
+            "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent",
             json=payload,
             headers=headers,
         )
@@ -64,14 +70,20 @@ def classify_parkinsons_info(text: str) -> str:
 
 def get_parkinsons_chat_response(message: str) -> str:
     try:
-        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
-        
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" 
+
         payload = {
             "contents": [{
                 "parts": [{
-                    "text": f"You are a helpful medical assistant specializing in Parkinson's disease. Provide accurate, compassionate responses about Parkinson's disease. Keep responses concise and easy to understand. If asked about medical advice, always recommend consulting a healthcare professional.\n\nUser: {message}\nAssistant:"
+                    "text": message
                 }]
-            }]
+            }],
+            "generationConfig": {
+                "temperature": 0.7,
+                "topK": 40,
+                "topP": 0.95,
+                "maxOutputTokens": 1024,
+            }
         }
 
         headers = {
@@ -82,19 +94,25 @@ def get_parkinsons_chat_response(message: str) -> str:
         print(f"Sending request to Gemini API...")  # Debug log
         response = requests.post(url, json=payload, headers=headers)
         print(f"Response status: {response.status_code}")  # Debug log
-        
-        response.raise_for_status()
+
+        if response.status_code != 200:
+            print(f"API Error Response: {response.text}")  # Debug log
+            return "I apologize, but there was an error processing your request."
+
         data = response.json()
-        
+        print(f"API Response: {data}")  # Debug log
+
         # Extract text from the response
-        if "candidates" in data and data["candidates"]:
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-            return text.strip()
-        
-        return "I apologize, but I couldn't generate a response. Please try again."
+        if "candidates" in data:
+            return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        elif "text" in data:
+            return data["text"].strip()
+        else:
+            print(f"Unexpected response structure: {data}")
+            return "I apologize, but I received an unexpected response format."
 
     except Exception as e:
-        print(f"Error in get_parkinsons_chat_response: {str(e)}")  # Debug log
+        print(f"Error in get_parkinsons_chat_response: {str(e)}")
         return f"I apologize, but I'm having trouble responding right now. Error: {str(e)}"
 
 def main():
