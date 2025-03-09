@@ -36,9 +36,12 @@ class Analyzer:
             params = self.scaler.transform(params)
 
         prob = float(self.model.predict_proba(params)[:, 1][0])
-        print(f"Raw probability: {prob}")
-
         prediction = 1 if prob > threshold else 0
+
+        # Calculate additional metrics
+        voice_quality_score = min(100, max(0, (1 - abs(prob - 0.52)) * 100))
+        reliability_score = min(100, max(0, (1 - abs(prob - threshold)) * 100))
+        severity_level = "High" if prob > 0.75 else "Moderate" if prob > 0.6 else "Low"
 
         # Determine confidence level
         if abs(prob - 0.52) < 0.1:
@@ -55,6 +58,14 @@ class Analyzer:
             'probability': prob,
             'confidence': confidence,
             'diagnosis': 'Parkinson\'s detected' if prediction == 1 else 'No Parkinson\'s detected',
+            'voice_quality': round(voice_quality_score, 2),
+            'reliability': round(reliability_score, 2),
+            'severity': severity_level,
+            'analysis_metrics': {
+                'voice_tremor': round(params[0][4] * 100, 2),  # Using jitter as tremor indicator
+                'voice_stability': round((1 - params[0][9]) * 100, 2),  # Using shimmer for stability
+                'breath_support': round(params[0][16] * 100, 2)  # Using harmonicity for breath support
+            }
         }
 
     # more functions for creating measurements

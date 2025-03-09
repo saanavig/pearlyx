@@ -14,6 +14,14 @@ const Analyze: React.FC = () => {
     confidence: string;
     details: string;
     classification?: string;
+    voice_quality?: number;
+    reliability?: number;
+    analysis_metrics?: {
+      voice_tremor: number;
+      voice_stability: number;
+      breath_support: number;
+    };
+    severity?: string;
   }
 
   const [predictionResult, setPredictionResult] = useState<PredictionResult | null>(null);
@@ -122,6 +130,32 @@ const Analyze: React.FC = () => {
                 <p>Diagnosis: <strong>{predictionResult.diagnosis}</strong></p>
                 <p>Confidence: <strong>{predictionResult.confidence}</strong></p>
                 <p>Probability: <strong>{(predictionResult.probability * 100).toFixed(2)}%</strong></p>
+
+                {/* Add more metrics */}
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="bg-white p-3 rounded-lg">
+                    <h3 className="font-semibold text-blue-900">Voice Quality Score</h3>
+                    <p className="text-2xl font-bold text-blue-600">{predictionResult.voice_quality}%</p>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg">
+                    <h3 className="font-semibold text-blue-900">Reliability Score</h3>
+                    <p className="text-2xl font-bold text-blue-600">{predictionResult.reliability}%</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 bg-white p-4 rounded-lg">
+                  <h3 className="font-semibold text-blue-900 mb-2">Detailed Analysis</h3>
+                  <div className="space-y-2">
+                    {predictionResult.analysis_metrics && (
+                      <>
+                        <p>Voice Tremor: <strong>{predictionResult.analysis_metrics.voice_tremor}%</strong></p>
+                        <p>Voice Stability: <strong>{predictionResult.analysis_metrics.voice_stability}%</strong></p>
+                        <p>Breath Support: <strong>{predictionResult.analysis_metrics.voice_tremor}%</strong></p>
+                      </>
+                    )}
+                    <p>Severity Level: <strong>{predictionResult.severity}</strong></p>
+                  </div>
+                </div>
               </div>
               {predictionResult.prediction === 1 && predictionResult.classification && (
                 <div className="mt-4 p-3 bg-white rounded">
