@@ -93,7 +93,9 @@ const Chat: React.FC = () => {
                         : 'bg-gray-100 text-gray-800' //bot
                     }`}
                     >
-                    <p>{message.text}</p>
+                    <p className="whitespace-pre-line">
+                        {message.text}
+                    </p>
                     <span className="text-xs opacity-75 mt-1 block">
                         {message.timestamp.toLocaleTimeString()}
                     </span>
