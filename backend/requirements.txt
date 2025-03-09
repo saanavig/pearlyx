@@ -5,8 +5,10 @@ cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
 click==8.1.8
+ffmpeg-python==0.2.0
 Flask==3.1.0
 flask-cors==5.0.1
+future==1.0.0
 google-ai-generativelanguage==0.6.15
 google-api-core==2.24.1
 google-api-python-client==2.163.0
