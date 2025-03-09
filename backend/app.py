@@ -45,25 +45,38 @@ def upload_audio():
             }), 200
 
     return jsonify({"error": "Invalid file type"}), 400
+
 @app.route("/analyze", methods=["POST"])
 def analyze_audio():
-    data = request.get_json()
-    filename = data.get("filename")
+    try:
+        if not request.is_json:
+            return jsonify({"error": "Content-Type must be application/json"}), 415
 
-    if not request.is_json:
-        return jsonify({"error": "Content-Type must be application/json"}), 415
+        data = request.get_json()
+        filename = data.get("filename")
 
-    if not filename:
-        return jsonify({"error": "No filename provided"}), 400
-    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        if not filename:
+            return jsonify({"error": "No filename provided"}), 400
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
-    if not os.path.exists(file_path):
-        return jsonify({"error": "File not found"}), 404
+        if not os.path.exists(file_path):
+            return jsonify({"error": f"File not found: {file_path}"}), 404
 
-    analyzer = Analyzer(file="models/model.pkl")
-    features = analyzer.get_features(file_path)
-    prediction = analyzer.predict(features)
-    return jsonify({"prediction": prediction.tolist()}), 200
+        analyzer = Analyzer(file="models/model.pkl")
+        features = analyzer.get_features(file_path)
+        prediction_result = analyzer.predict(features)
+
+        return jsonify({
+            "prediction": prediction_result,
+            "status": "success"
+        }), 200
+
+    except Exception as e:
+        print(f"Error in analyze_audio: {str(e)}")  # For debugging
+        return jsonify({
+            "error": f"Analysis failed: {str(e)}",
+            "status": "error"
+        }), 500
 
 @app.route("/delete/<filename>", methods=["DELETE"])
 def delete_file(filename):

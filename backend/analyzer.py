@@ -12,12 +12,35 @@ class Analyzer:
     def load_file(self):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         model_path = os.path.join(script_dir, 'models/model.pkl')
+        scaler_path = os.path.join(script_dir, 'models/scaler.pkl')
+
+        print(f"Loading model from: {model_path}")
+
         with open(model_path, 'rb') as f:
             model = pickle.load(f)
+
+        print(f"Model loaded: {type(model)}")
+        try:
+            with open(scaler_path, 'rb') as f:
+                scaler = pickle.load(f)
+            self.scaler = scaler
+            print(f"Scaler loaded: {type(scaler)}")
+        except FileNotFoundError:
+            print("No scaler file found")
+            self.scaler = None
+
         self.model = model
 
-    def predict(self, params): # params is a 2D numpy array
-        return self.model.predict(params)
+    def predict(self, params, threshold=0.6):
+        if hasattr(self, 'scaler') and self.scaler is not None:
+            params = self.scaler.transform(params)
+        prob = self.model.predict_proba(params)[:, 1][0]
+        prediction = 1 if prob > threshold else 0
+
+        return {
+            'prediction': prediction,
+            'diagnosis': 'Parkinson\'s detected' if prediction == 1 else 'No Parkinson\'s detected'
+        }
 
     # more functions for creating measurements
     def get_features(self, audio_file):
