@@ -62,6 +62,41 @@ def classify_parkinsons_info(text: str) -> str:
         print(f"Error during Gemini API request: {e}")
         return "Error in API request. Please try again."
 
+def get_parkinsons_chat_response(message: str) -> str:
+    try:
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+        
+        payload = {
+            "contents": [{
+                "parts": [{
+                    "text": f"You are a helpful medical assistant specializing in Parkinson's disease. Provide accurate, compassionate responses about Parkinson's disease. Keep responses concise and easy to understand. If asked about medical advice, always recommend consulting a healthcare professional.\n\nUser: {message}\nAssistant:"
+                }]
+            }]
+        }
+
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": GEMINI_API_KEY
+        }
+
+        print(f"Sending request to Gemini API...")  # Debug log
+        response = requests.post(url, json=payload, headers=headers)
+        print(f"Response status: {response.status_code}")  # Debug log
+        
+        response.raise_for_status()
+        data = response.json()
+        
+        # Extract text from the response
+        if "candidates" in data and data["candidates"]:
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            return text.strip()
+        
+        return "I apologize, but I couldn't generate a response. Please try again."
+
+    except Exception as e:
+        print(f"Error in get_parkinsons_chat_response: {str(e)}")  # Debug log
+        return f"I apologize, but I'm having trouble responding right now. Error: {str(e)}"
+
 def main():
     parkinsons_text = "Patient shows tremors and rigidity in their muscles, which are typical symptoms of Parkinson's disease."
 

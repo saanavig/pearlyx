@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 # import parselmouth
 from analyzer import Analyzer
 from parkinsons import classify_parkinsons_info
+from parkinsons import get_parkinsons_chat_response
 
 app = Flask(__name__)
 
@@ -96,6 +97,32 @@ def delete_file(filename):
         return jsonify({"message": "File deleted successfully!"}), 200
     else:
         return jsonify({"error": "File not found"}), 404
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        if not request.is_json:
+            return jsonify({"error": "Content-Type must be application/json"}), 415
+
+        data = request.get_json()
+        message = data.get("message")
+
+        if not message:
+            return jsonify({"error": "No message provided"}), 400
+
+        response = get_parkinsons_chat_response(message)
+        
+        return jsonify({
+            "response": response,
+            "status": "success"
+        }), 200
+
+    except Exception as e:
+        print(f"Error in chat endpoint: {str(e)}")  # Debug log
+        return jsonify({
+            "error": f"Chat failed: {str(e)}",
+            "status": "error"
+        }), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

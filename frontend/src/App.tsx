@@ -1,12 +1,12 @@
 import "./index.css";
 
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
 import About from "./About.tsx";
 import Analyze from "./Analyze.tsx";
 import { ReactMic } from "react-mic";
 import logo from './assets/logo.png';
-import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -87,12 +87,15 @@ const Home: React.FC = () => {
           <span className="ml-2 text-gray-900">Pearlyx</span>
         </div>
         <div className="space-x-6">
-          <a href="/" className="text-blue-600 font-medium">
+          <Link to="/" className="text-blue-600 font-medium">
             Home
-          </a>
-          <a href="/about" className="text-gray-600 hover:text-gray-900">
+          </Link>
+          <Link to="/chat" className="text-gray-600 hover:text-gray-900">
+            Chat
+          </Link>
+          <Link to="/about" className="text-gray-600 hover:text-gray-900">
             About
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -176,7 +179,7 @@ const Home: React.FC = () => {
       <footer className="bg-white py-4 mt-10 shadow-inner">
                 <div className="container mx-auto text-center text-gray-600">
                     <p>&copy; {new Date().getFullYear()} Pearlyx. All rights reserved.</p>
-                    
+
                 </div>
             </footer>
     </div>
