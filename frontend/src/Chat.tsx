@@ -74,6 +74,7 @@ const Chat: React.FC = () => {
             </div>
             <div className="space-x-6">
             <Link to="/" className="text-gray-600 hover:text-gray-900">Home</Link>
+            <Link to="/chat" className="text-gray-600 hover:text-gray-900">Chat</Link>
             <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
             </div>
         </nav>
