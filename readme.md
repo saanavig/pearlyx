@@ -1,74 +1,88 @@
-# Pearlyx
+# Pearlyx - Voice Analysis Tools for Neurological & Respiratory Health
 
-**Pearlyx** is a web app that analyzes voice recordings to detect early signs of diseases like Parkinson’s, Alzheimer’s, and other respiratory conditions such as COVID-19 and pneumonia. Using advanced AI models, the app listens to voice patterns and identifies potential health issues based on speech anomalies like slurred speech or cough analysis.
+Pearlyx is an innovative web application designed to assist in the early detection of Parkinson's disease through voice analysis. Using advanced AI technology, we analyze subtle variations in voice patterns to provide preliminary screening support for healthcare professionals.
 
-### Key Features
-- ✅ **Speech-based AI Diagnosis**: Users can either record a voice sample or upload an audio file, and the AI detects early disease patterns such as slurred speech or tremors in Parkinson’s.
-- ✅ **Symptom Progression Tracking**: Users can track the progression of their symptoms over time, with historical voice trends to monitor their health.
-- ✅ **Privacy-First Approach**: The AI models run on-device to protect user data and maintain privacy at all stages.
+## Features
 
-### Potential Improvements
-- Detecting other diseases such as **Alzheimer’s** and respiratory conditions like **COVID-19** or **pneumonia** using **cough analysis** with AI models.
+- **Voice Recording & Analysis**: Upload or record voice samples for instant analysis
+- **AI-Powered Detection**: Advanced analysis of voice patterns, tremors, and breathing patterns
+- **Interactive Chat Support**: AI-assisted information about Parkinson's disease
+- **Detailed Reports**: Comprehensive analysis results with multiple metrics
+- **Healthcare Integration**: Support tool for medical professionals
 
----
+## Technology Stack
 
-## Tech Stack
+- **Frontend**:
+  - React + TypeScript
+  - Vite for build tooling
+  - TailwindCSS for styling
+  - React Router for navigation
 
-### Speech Analysis
-- **Wav2Vec**: Utilized for converting voice recordings into text by processing raw audio data.
+- **Backend**:
+  - Python Flask server
+  - Gemini AI for chat support
+  - pydub for audio processing
+  - Custom ML model for voice analysis
 
-### Machine Learning Models
-- **TensorFlow**: Machine learning frameworks used to train AI models on disease-specific datasets like **mPower** (Parkinson's dataset).
+## Getting Started
 
-### Audio Processing
-- **Librosa**: A powerful library for signal processing and feature extraction from audio recordings.
+### Prerequisites
+- Node.js (v18 or higher)
+- Python 3.8+
+- FFmpeg for audio processing
 
-### Frontend
-- **React.js**: Frontend framework for building a responsive web app.
-- **Tailwind CSS**: Utility-first CSS framework used for designing the UI.
+### Installation
 
-### Backend
-- **Flask**: Backend frameworks used to handle API requests and serve the AI model for voice analysis.
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/pearlyx.git
+cd pearlyx
+```
 
----
+2. Set up the frontend:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## How It Works
+3. Set up the backend:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Mac/Linux
+pip install -r requirements.txt
+```
 
-1. **Record or Upload an Audio Sample**: Users can either record their voice directly through the web app or upload an existing audio file.
-2. **Speech-to-Text Conversion**: The app uses **Wav2Vec** to convert the voice into text and extract relevant speech features.
-3. **AI Analysis**: The extracted features are passed to a **TensorFlow** model that identifies speech patterns indicative of diseases like Parkinson’s.
-4. **Symptom Tracking**: Users can track their voice trends and symptom progression over time through graphical reports.
-5. **Privacy Protection**: All data processing and AI analysis are performed on the device, ensuring that no private data is transmitted to external servers.
+4. Configure environment variables:
+```bash
+# In backend/.env
+GEMINI_API_KEY=your_api_key_here
+```
 
----
+5. Start the backend server:
+```bash
+python app.py
+```
 
-## Example Workflow
+## Important Note
 
-1. **User Records or Uploads Audio**: The user can either record a voice sample directly in the web app or upload an existing audio file.
-2. **AI Diagnoses the Voice**: The recorded or uploaded audio is sent to the Flask/FastAPI backend, where the AI model processes it to detect patterns.
-3. **Results Displayed**: The frontend will display a diagnosis, whether it's a positive indication of early Parkinson’s signs or any other condition the app is trained to detect.
+Pearlyx is designed as a screening tool and should not be used as a definitive diagnostic solution. Our technology aims to support, not replace, professional medical diagnosis. Always consult with healthcare professionals for proper medical evaluation and diagnosis.
 
----
+## Statistics
 
-## Privacy and Security
+- Parkinson's affects nearly 1 million people in the US alone
+- 90% of Parkinson's patients experience voice changes
+- Voice changes can appear before motor symptoms become apparent
 
-- All AI processing occurs **on-device** to ensure user data is kept private.
-- **No voice recordings** or sensitive data are stored or transmitted to external servers.
-- Users are in full control of their health data at all times.
+## Contributing
 
----
+We welcome contributions! Please read our contributing guidelines before submitting pull requests.
 
-## Potential Use Cases
-
-- **Parkinson’s Disease Detection**: Early detection of Parkinson’s through speech anomalies (e.g., tremors, slurred speech).
-- **Alzheimer’s Disease Detection**: Detect speech-related patterns that may indicate early signs of Alzheimer’s.
-- **Respiratory Conditions**: Analyze coughs to detect potential signs of **COVID-19** or **pneumonia**.
-
----
 
 ## Future Improvements
 
-- **Enhance ML Models**: Train models for a wider range of diseases beyond Parkinson's.
+- **Enhance ML Models**:  Train models to detect a broader range of diseases beyond Parkinson’s, including Alzheimer's and respiratory illnesses such as pneumonia and COVID-19.
 - **Real-time Tracking**: Allow users to record multiple samples over time and provide real-time progress tracking.
 - **Expand Data Privacy**: Further improve data privacy by adding encrypted local storage solutions.
 - **Cross-Platform Support**: Expand the mobile app version to Android and iOS.
