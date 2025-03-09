@@ -1,11 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Analyze: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { filepath, filename, prediction } = location.state || {};
+  const [randomPrediction, setRandomPrediction] = useState<number | null>(null);
+
+  useEffect(() => {
+    //placeholder - change need to be replaced with data
+    setRandomPrediction(Math.round(Math.random()));
+  }, []);
 
   if (!filepath || !filename) {
     return (
@@ -45,7 +50,10 @@ const Analyze: React.FC = () => {
         <h1 className="text-4xl font-bold text-gray-800 mt-10">Analysis Results</h1>
         <div className="mt-4 text-gray-600">
           <p>File name: <strong>{filename}</strong></p>
-          <p>Prediction: <strong>{prediction}</strong></p>
+          <p>Prediction: <strong>{randomPrediction}</strong></p>
+          <p>Diagnosis: <strong>
+            {randomPrediction === 1 ? "Parkinson's detected" : "No Parkinson's detected"}
+          </strong></p>
         </div>
         <button
           onClick={() => navigate("/")}
